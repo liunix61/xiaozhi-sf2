@@ -532,6 +532,12 @@ mqtt_client_t *mqtt_xiaozhi(xiaozhi_context_t *ctx)
     LOCK_TCPIP_CORE();
     err = dns_gethostbyname(ctx->endpoint, &ctx->mqtt_addr, mqtt_found_callback, ctx);
     UNLOCK_TCPIP_CORE();
+    if(err == ERR_OK)
+    {
+
+        rt_kprintf("mqtt_xiaozhi: DNS lookup succeeded, IP: %s\n", ipaddr_ntoa(&(ctx->mqtt_addr)));
+        rt_sem_release(ctx->sem);
+    }
     if (err != ERR_OK && err != ERR_INPROGRESS)
     {
         rt_kprintf("Coud not find %s, please check PAN connection\n", ctx->endpoint);
