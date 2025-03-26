@@ -339,7 +339,7 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
 
         xiaozhi_ui_chat_output("goodbye! 等待唤醒...");
         xiaozhi_ui_chat_status("disconnected");
-        xiaozhi_ui_update_emoji("neutral");
+        xiaozhi_ui_update_emoji("sleep");
     }
     else if (strcmp(type, "tts") == 0)
     {
