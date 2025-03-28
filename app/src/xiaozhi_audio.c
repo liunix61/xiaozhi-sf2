@@ -251,10 +251,16 @@ void xz_speaker(int on)
 
 static void xz_button_event_handler(int32_t pin, button_action_t action)
 {
+    static last_action=BUTTON_RELEASED;
     rt_kprintf("button(%d) %d:", pin, action);
-
+    if(last_action==action)
+    {
+        return;
+    }
+    last_action=action;
     if (g_state == kDeviceStateUnknown)//goodby唤醒
         {
+            rt_kprintf("jzlljzlbutton(%d) %d:", pin, action);
             xiaozhi_ui_chat_status("\u5524\u9192\u4e2d...");
             mqtt_hello(&g_xz_context);
             if (action == BUTTON_PRESSED)
@@ -303,7 +309,7 @@ void xz_button_init(void)
     if (initialized == 0)
     {
         button_cfg_t cfg;
-        cfg.pin = BSP_KEY2_PIN;
+        cfg.pin = BSP_KEY1_PIN;
 
         cfg.active_state = BSP_KEY2_ACTIVE_HIGH;
         cfg.mode = PIN_MODE_INPUT;
@@ -609,7 +615,7 @@ void xz_audio_downlink(uint8_t *data, uint32_t size, uint32_t *aes_value, uint8_
     idle = rt_slist_first(&thiz->downlink_decode_idle);
     rt_exit_critical();
     if (idle)
-    {
+    {   
         xz_decode_queue_t *queue = rt_container_of(idle, xz_decode_queue_t, node);
         if (queue->size < size + 16)
         {
