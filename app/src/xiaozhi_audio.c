@@ -260,7 +260,6 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
     last_action=action;
     if (g_state == kDeviceStateUnknown)//goodby唤醒
         {
-            rt_kprintf("jzlljzlbutton(%d) %d:", pin, action);
             xiaozhi_ui_chat_status("\u5524\u9192\u4e2d...");
             mqtt_hello(&g_xz_context);
             if (action == BUTTON_PRESSED)
@@ -309,7 +308,7 @@ void xz_button_init(void)
     if (initialized == 0)
     {
         button_cfg_t cfg;
-        cfg.pin = BSP_KEY1_PIN;
+        cfg.pin = BSP_KEY2_PIN;
 
         cfg.active_state = BSP_KEY2_ACTIVE_HIGH;
         cfg.mode = PIN_MODE_INPUT;
