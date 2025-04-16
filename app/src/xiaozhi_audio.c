@@ -76,7 +76,7 @@
 
 #define XZ_EVENT_ALL            (XZ_EVENT_MIC_RX | XZ_EVENT_SPK_TX | XZ_EVENT_DOWNLINK)
 
-#define XZ_DOWNLINK_QUEUE_NUM   64
+#define XZ_DOWNLINK_QUEUE_NUM   128
 
 typedef struct
 {
@@ -182,6 +182,7 @@ void xz_udp_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
         if (sequence !=  g_xz_context.remote_sequence + 1)
         {
             rt_kprintf("Received audio packet with wrong sequence: %lu, expected: %lu\n", sequence,  g_xz_context.remote_sequence + 1);
+            g_xz_context.remote_sequence = sequence;
         }
         else
         {
@@ -190,6 +191,7 @@ void xz_udp_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
         memcpy(&(nonce[0]), data, sizeof(nonce));
         data += sizeof(nonce);
         size = p->len - sizeof(nonce);
+        rt_kprintf("UDP Recv: %u bytes, sequence: %lu\n", size, sequence);
         xz_audio_downlink(data, size, &nonce[0], 1);
 end:
         pbuf_free(p);
@@ -346,6 +348,7 @@ static void audio_write_and_wait(xz_audio_t *thiz, uint8_t *data, uint32_t data_
     while (!thiz->is_exit)
     {
         ret = audio_write(thiz->speaker, data, data_len);
+        break;
         if (ret)
         {
             break;
