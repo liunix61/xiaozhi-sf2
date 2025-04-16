@@ -12,27 +12,27 @@ static lv_style_t style;
 extern const unsigned char droid_sans_fallback_font[];
 extern const int droid_sans_fallback_font_size;
 
-extern const lv_image_dsc_t color_neutral;
-extern const lv_image_dsc_t color_happy;
-extern const lv_image_dsc_t color_laughing;
-extern const lv_image_dsc_t color_funny;
-extern const lv_image_dsc_t color_sad;
-extern const lv_image_dsc_t color_angry;
-extern const lv_image_dsc_t color_crying;
-extern const lv_image_dsc_t color_loving;
-extern const lv_image_dsc_t color_embarrassed;
-extern const lv_image_dsc_t color_surprised;
-extern const lv_image_dsc_t color_shocked;
-extern const lv_image_dsc_t color_thinking;
-extern const lv_image_dsc_t color_winking;
-extern const lv_image_dsc_t color_cool;
-extern const lv_image_dsc_t color_relaxed;
-extern const lv_image_dsc_t color_delicious;
-extern const lv_image_dsc_t color_kissy;
-extern const lv_image_dsc_t color_confident;
-extern const lv_image_dsc_t color_sleepy;
-extern const lv_image_dsc_t color_silly;
-extern const lv_image_dsc_t color_confused;
+extern const lv_image_dsc_t neutral;
+extern const lv_image_dsc_t happy;
+extern const lv_image_dsc_t laughing;
+extern const lv_image_dsc_t funny;
+extern const lv_image_dsc_t sad;
+extern const lv_image_dsc_t angry;
+extern const lv_image_dsc_t crying;
+extern const lv_image_dsc_t loving;
+extern const lv_image_dsc_t embarrassed;
+extern const lv_image_dsc_t surprised;
+extern const lv_image_dsc_t shocked;
+extern const lv_image_dsc_t thinking;
+extern const lv_image_dsc_t winking;
+extern const lv_image_dsc_t cool;
+extern const lv_image_dsc_t relaxed;
+extern const lv_image_dsc_t delicious;
+extern const lv_image_dsc_t kissy;
+extern const lv_image_dsc_t confident;
+extern const lv_image_dsc_t sleepy;
+extern const lv_image_dsc_t silly;
+extern const lv_image_dsc_t confused;
 
 
 extern const lv_image_dsc_t ble;//ble
@@ -41,31 +41,13 @@ extern const lv_image_dsc_t ble_close;
 static lv_obj_t *global_label1;
 static lv_obj_t *global_label2;
 
-static lv_obj_t *global_img1;//emoji
-static lv_obj_t *global_img2;
-static lv_obj_t *global_img3;
-static lv_obj_t *global_img4;
-static lv_obj_t *global_img5;
-static lv_obj_t *global_img6;
-static lv_obj_t *global_img7;
-static lv_obj_t *global_img8;
-static lv_obj_t *global_img9;
-static lv_obj_t *global_img10;
-static lv_obj_t *global_img11; 
-static lv_obj_t *global_img12;
-static lv_obj_t *global_img13;
-static lv_obj_t *global_img14;
-static lv_obj_t *global_img15;
-static lv_obj_t *global_img16;
-static lv_obj_t *global_img17;
-static lv_obj_t *global_img18;
-static lv_obj_t *global_img19;
-static lv_obj_t *global_img20;
-static lv_obj_t *global_img21;
+static lv_obj_t *global_img;
+
 
 
 static lv_obj_t *global_img_ble;
-static lv_obj_t *global_img_ble_close;
+
+
 
 void set_position_by_percentage(lv_obj_t * obj, int x_percent, int y_percent) {
     // Gets the width and height of the screen resolution
@@ -82,6 +64,41 @@ void set_position_by_percentage(lv_obj_t * obj, int x_percent, int y_percent) {
 
 rt_err_t xiaozhi_ui_obj_init(void)
 {
+    LV_IMAGE_DECLARE(neutral);
+    LV_IMAGE_DECLARE(happy);
+    LV_IMAGE_DECLARE(laughing);
+    LV_IMAGE_DECLARE(funny);
+    LV_IMAGE_DECLARE(sad);
+    LV_IMAGE_DECLARE(angry);
+    LV_IMAGE_DECLARE(crying);
+    LV_IMAGE_DECLARE(loving);
+    LV_IMAGE_DECLARE(embarrassed);
+    LV_IMAGE_DECLARE(surprised);
+    LV_IMAGE_DECLARE(shocked);
+    LV_IMAGE_DECLARE(thinking);
+    LV_IMAGE_DECLARE(winking);
+    LV_IMAGE_DECLARE(cool);
+    LV_IMAGE_DECLARE(relaxed);
+    LV_IMAGE_DECLARE(delicious);
+    LV_IMAGE_DECLARE(kissy);
+    LV_IMAGE_DECLARE(confident);
+    LV_IMAGE_DECLARE(sleepy);
+    LV_IMAGE_DECLARE(silly);
+    LV_IMAGE_DECLARE(confused);
+
+    LV_IMAGE_DECLARE(ble);
+    LV_IMAGE_DECLARE(ble_close);
+
+    global_img_ble = lv_img_create(lv_screen_active());//ble
+    lv_img_set_src(global_img_ble, &ble);
+    lv_obj_align(global_img_ble, LV_ALIGN_TOP_LEFT, 40, 0);
+    
+
+    global_img = lv_img_create(lv_screen_active());//emoji
+    lv_img_set_src(global_img, &neutral);
+    lv_obj_align(global_img, LV_ALIGN_CENTER, 0, -40);
+    
+
     global_label1 = lv_label_create(lv_screen_active());//top text
 
     lv_label_set_long_mode(global_label1, LV_LABEL_LONG_SCROLL_CIRCULAR); 
@@ -97,149 +114,10 @@ rt_err_t xiaozhi_ui_obj_init(void)
     lv_obj_add_style(global_label2, &style, 0);
     lv_obj_set_width(global_label2, LV_HOR_RES_MAX);
     lv_obj_set_style_text_align(global_label2,LV_TEXT_ALIGN_CENTER, 0);
-    set_position_by_percentage(global_label2, 0, 75);
+    
+    lv_obj_align_to(global_label2, global_img, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
 
-
-    LV_IMAGE_DECLARE(color_neutral);
-    LV_IMAGE_DECLARE(color_happy);
-    LV_IMAGE_DECLARE(color_laughing);
-    LV_IMAGE_DECLARE(color_funny);
-    LV_IMAGE_DECLARE(color_sad);
-    LV_IMAGE_DECLARE(color_angry);
-    LV_IMAGE_DECLARE(color_crying);
-    LV_IMAGE_DECLARE(color_loving);
-    LV_IMAGE_DECLARE(color_embarrassed);
-    LV_IMAGE_DECLARE(color_surprised);
-    LV_IMAGE_DECLARE(color_shocked);
-    LV_IMAGE_DECLARE(color_thinking);
-    LV_IMAGE_DECLARE(color_winking);
-    LV_IMAGE_DECLARE(color_cool);
-    LV_IMAGE_DECLARE(color_relaxed);
-    LV_IMAGE_DECLARE(color_delicious);
-    LV_IMAGE_DECLARE(color_kissy);
-    LV_IMAGE_DECLARE(color_confident);
-    LV_IMAGE_DECLARE(color_sleepy);
-    LV_IMAGE_DECLARE(color_silly);
-    LV_IMAGE_DECLARE(color_confused);
-
-    LV_IMAGE_DECLARE(ble);
-    LV_IMAGE_DECLARE(ble_close);
-
-    global_img1 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img1, &color_neutral);
-    lv_obj_align(global_img1, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img1, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img2 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img2, &color_happy);
-    lv_obj_align(global_img2, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img2, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img3 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img3, &color_laughing);
-    lv_obj_align(global_img3, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img3, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img4 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img4, &color_funny);
-    lv_obj_align(global_img4, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img4, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img5 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img5, &color_sad);
-    lv_obj_align(global_img5, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img5, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img6 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img6, &color_angry);
-    lv_obj_align(global_img6, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img6, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img7 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img7, &color_crying);
-    lv_obj_align(global_img7, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img7, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img8 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img8, &color_loving);
-    lv_obj_align(global_img8, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img8, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img9 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img9, &color_embarrassed);
-    lv_obj_align(global_img9, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img9, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img10 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img10, &color_surprised);
-    lv_obj_align(global_img10, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img10, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img11 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img11, &color_shocked);
-    lv_obj_align(global_img11, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img11, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img12 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img12, &color_thinking);
-    lv_obj_align(global_img12, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img12, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img13 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img13, &color_winking);
-    lv_obj_align(global_img13, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img13, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img14 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img14, &color_cool);
-    lv_obj_align(global_img14, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img14, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img15 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img15, &color_relaxed);
-    lv_obj_align(global_img15, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img15, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img16 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img16, &color_delicious);
-    lv_obj_align(global_img16, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img16, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img17 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img17, &color_kissy);
-    lv_obj_align(global_img17, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img17, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img18 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img18, &color_confident);
-    lv_obj_align(global_img18, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img18, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img19 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img19, &color_sleepy);
-    lv_obj_align(global_img19, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img19, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img20 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img20, &color_silly);
-    lv_obj_align(global_img20, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img20, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img21 = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img21, &color_confused);
-    lv_obj_align(global_img21, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_flag(global_img21, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img_ble = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img_ble, &ble);
-    lv_obj_align(global_img_ble, LV_ALIGN_TOP_LEFT, 30, 0);
-    lv_obj_add_flag(global_img_ble, LV_OBJ_FLAG_HIDDEN);//hidden
-
-    global_img_ble_close = lv_img_create(lv_screen_active());
-    lv_img_set_src(global_img_ble_close, &ble_close);
-    lv_obj_align(global_img_ble_close, LV_ALIGN_TOP_LEFT, 30, 0);
-    lv_obj_add_flag(global_img_ble_close, LV_OBJ_FLAG_HIDDEN);//hidden
-
+   
     return RT_EOK;
 }
 
@@ -272,117 +150,51 @@ void xiaozhi_ui_update_emoji(char *string)//emoji
 {
     rt_sem_take(&update_ui_sema, RT_WAITING_FOREVER);
 
-    lv_obj_add_flag(global_img1, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img2, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img3, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img4, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img5, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img6, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img7, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img8, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img9, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img10, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img11, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img12, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img13, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img14, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img15, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img16, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img17, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img18, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img19, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img20, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img21, LV_OBJ_FLAG_HIDDEN);
-
-    if(string)
-    {
-        if(strcmp(string,"neutral") == 0)
-        {
-            lv_obj_clear_flag(global_img1, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"happy") == 0)
-        {
-            lv_obj_clear_flag(global_img2, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"laughing") == 0)
-        {
-            lv_obj_clear_flag(global_img3, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"funny") == 0)
-        {
-            lv_obj_clear_flag(global_img4, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"sad") == 0)
-        {
-            lv_obj_clear_flag(global_img5, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"angry") == 0)
-        {
-            lv_obj_clear_flag(global_img6, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"crying") == 0)
-        {
-            lv_obj_clear_flag(global_img7, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"loving") == 0)
-        {
-            lv_obj_clear_flag(global_img8, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"embarrassed") == 0)
-        {
-            lv_obj_clear_flag(global_img9, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"surprised") == 0)
-        {
-            lv_obj_clear_flag(global_img10, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"shocked") == 0)
-        {
-            lv_obj_clear_flag(global_img11, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"thinking") == 0)
-        {
-            lv_obj_clear_flag(global_img12, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"winking") == 0)
-        {
-            lv_obj_clear_flag(global_img13, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"cool") == 0)
-        {
-            lv_obj_clear_flag(global_img14, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"relaxed") == 0)
-        {
-            lv_obj_clear_flag(global_img15, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"delicious") == 0)
-        {
-            lv_obj_clear_flag(global_img16, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"kissy") == 0)
-        {
-            lv_obj_clear_flag(global_img17, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"confident") == 0)
-        {
-            lv_obj_clear_flag(global_img18, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"sleepy") == 0)
-        {
-            lv_obj_clear_flag(global_img19, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"silly") == 0)
-        {
-            lv_obj_clear_flag(global_img20, LV_OBJ_FLAG_HIDDEN);
-        }
-        else if(strcmp(string,"confused") == 0)
-        {
-            lv_obj_clear_flag(global_img21, LV_OBJ_FLAG_HIDDEN);
-        }
-        else
-        {
-            lv_obj_clear_flag(global_img1, LV_OBJ_FLAG_HIDDEN);//common emoji is neutral
+    if (string) {
+        if (strcmp(string, "neutral") == 0) {
+            lv_img_set_src(global_img, &neutral);
+        } else if (strcmp(string, "happy") == 0) {
+            lv_img_set_src(global_img, &happy);
+        } else if (strcmp(string, "laughing") == 0) {
+            lv_img_set_src(global_img, &laughing);
+        } else if (strcmp(string, "funny") == 0) {
+            lv_img_set_src(global_img, &funny);
+        } else if (strcmp(string, "sad") == 0) {
+            lv_img_set_src(global_img, &sad);
+        } else if (strcmp(string, "angry") == 0) {
+            lv_img_set_src(global_img, &angry);
+        } else if (strcmp(string, "crying") == 0) {
+            lv_img_set_src(global_img, &crying);
+        } else if (strcmp(string, "loving") == 0) {
+            lv_img_set_src(global_img, &loving);
+        } else if (strcmp(string, "embarrassed") == 0) {
+            lv_img_set_src(global_img, &embarrassed);
+        } else if (strcmp(string, "surprised") == 0) {
+            lv_img_set_src(global_img, &surprised);
+        } else if (strcmp(string, "shocked") == 0) {
+            lv_img_set_src(global_img, &shocked);
+        } else if (strcmp(string, "thinking") == 0) {
+            lv_img_set_src(global_img, &thinking);
+        } else if (strcmp(string, "winking") == 0) {
+            lv_img_set_src(global_img, &winking);
+        } else if (strcmp(string, "cool") == 0) {
+            lv_img_set_src(global_img, &cool);
+        } else if (strcmp(string, "relaxed") == 0) {
+            lv_img_set_src(global_img, &relaxed);
+        } else if (strcmp(string, "delicious") == 0) {
+            lv_img_set_src(global_img, &delicious);
+        } else if (strcmp(string, "kissy") == 0) {
+            lv_img_set_src(global_img, &kissy);
+        } else if (strcmp(string, "confident") == 0) {
+            lv_img_set_src(global_img, &confident);
+        } else if (strcmp(string, "sleepy") == 0) {
+            lv_img_set_src(global_img, &sleepy);
+        } else if (strcmp(string, "silly") == 0) {
+            lv_img_set_src(global_img, &silly);
+        } else if (strcmp(string, "confused") == 0) {
+            lv_img_set_src(global_img, &confused);
+        } else {
+            lv_img_set_src(global_img, &neutral); // common emoji is neutral
         }
     }
 
@@ -393,18 +205,15 @@ void xiaozhi_ui_update_ble(char *string)//ble
 {
     rt_sem_take(&update_ui_sema, RT_WAITING_FOREVER);
 
-    lv_obj_add_flag(global_img_ble, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(global_img_ble_close, LV_OBJ_FLAG_HIDDEN);
-
     if(string)
     {
         if(strcmp(string,"open") == 0)
         {
-            lv_obj_clear_flag(global_img_ble, LV_OBJ_FLAG_HIDDEN);
+            lv_img_set_src(global_img_ble, &ble);
         }
         else if(strcmp(string,"close") == 0)
         {
-            lv_obj_clear_flag(global_img_ble_close, LV_OBJ_FLAG_HIDDEN);
+            lv_img_set_src(global_img_ble, &ble_close);
         }
     }
 
@@ -434,7 +243,8 @@ void xiaozhi_ui_task(void *args)
     lv_font_t *font = lv_tiny_ttf_create_data(droid_sans_fallback_font, droid_sans_fallback_font_size, 30);
     lv_style_set_text_font(&style, font);
     lv_style_set_text_align(&style, LV_TEXT_ALIGN_CENTER);
-    lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);//SET BG COLOR
+    lv_style_set_text_color(&style, lv_color_hex(0xFFFFFF));
+    lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);//SET BG COLOR
 
     ret = xiaozhi_ui_obj_init();
     if (ret != RT_EOK)
