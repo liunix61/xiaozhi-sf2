@@ -253,7 +253,7 @@ void xz_speaker(int on)
 
 static void xz_button_event_handler(int32_t pin, button_action_t action)
 {
-    static last_action=BUTTON_RELEASED;
+    static button_action_t last_action=BUTTON_RELEASED;
     rt_kprintf("button(%d) %d:", pin, action);
     if(last_action==action)
     {
