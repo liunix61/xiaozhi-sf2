@@ -1,0 +1,29 @@
+import os
+from building import *
+
+
+cwd = GetCurrentDir()
+# Add source code
+src = []
+
+cwd = GetCurrentDir()
+objs_ezip = []
+objs_ezip += Glob('*.png')
+
+
+if 16 == GetConfigValue('LV_COLOR_DEPTH'):
+    color_fmt = '-rgb565'
+else:
+    color_fmt = '-rgb888'
+
+
+if GetDepend('LVGL_V9'):
+    lvgl_ver = '9'
+else:
+    lvgl_ver = '8'
+
+src += Env.ImgResource(objs_ezip, color_fmt, '2', '', False, lvgl_ver)
+
+group = DefineGroup('asset', src, depend = [''])
+
+Return('group')
