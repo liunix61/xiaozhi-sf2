@@ -75,7 +75,7 @@ void HAL_MspInit(void)
 #include "bts2_app_inc.h"
 #include "ble_connection_manager.h"
 #include "bt_connection_manager.h"
-
+#include "bt_env.h"
 #include "ulog.h"
 
 #define BT_APP_READY 0
@@ -84,13 +84,14 @@ void HAL_MspInit(void)
 
 #define PAN_TIMER_MS        3000
 
-typedef struct
-{
-    BOOL bt_connected;
-    bt_notify_device_mac_t bd_addr;
-    rt_timer_t pan_connect_timer;
-} bt_app_t;
-static bt_app_t g_bt_app_env;
+// typedef struct
+// {
+//     BOOL bt_connected;
+//     bt_notify_device_mac_t bd_addr;
+//     rt_timer_t pan_connect_timer;
+// } bt_app_t;
+// static bt_app_t g_bt_app_env;
+bt_app_t g_bt_app_env;
 static rt_mailbox_t g_bt_app_mb;
 
 void bt_app_connect_pan_timeout_handle(void *parameter)

@@ -58,6 +58,10 @@
 #include "os_support.h"
 #include "audio_server.h"
 #include "mem_section.h"
+#include "bts2_app_inc.h"
+#include "ble_connection_manager.h"
+#include "bt_connection_manager.h"
+#include "bt_env.h"
 
 #undef LOG_TAG
 #define LOG_TAG           "xz"
@@ -272,12 +276,17 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
                 mqtt_listen_start(&g_xz_context, kListeningModeAutoStop);
                 xiaozhi_ui_chat_status("\u8046\u542c\u4e2d...");
                 xz_mic(1);
+                rt_kprintf("exit sniff mode\r\n");
+                bt_interface_exit_sniff_mode((unsigned char*)&g_bt_app_env.bd_addr);//exit sniff mode
+                bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH);//close role switch
             }
             else if (action == BUTTON_RELEASED)
             {
                 rt_kprintf("released\r\n");
                 xiaozhi_ui_chat_status("\u5f85\u547d\u4e2d...");
                 xz_mic(0);
+                rt_kprintf("enter sniff mode\r\n");
+                bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH  | BT_NOTIFY_LINK_POLICY_SNIFF_MODE);
                 mqtt_listen_stop(&g_xz_context);
             }   
         }
@@ -288,15 +297,20 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
                 rt_kprintf("pressed\r\n");
                 if (g_state == kDeviceStateSpeaking)
                     mqtt_speak_abort(&g_xz_context, kAbortReasonWakeWordDetected);
-                mqtt_listen_start(&g_xz_context, kListeningModeAutoStop);
+                mqtt_listen_start(&g_xz_context, kListeningModeManualStop);
                 xiaozhi_ui_chat_status("\u8046\u542c\u4e2d...");
                 xz_mic(1);
+                rt_kprintf("exit sniff mode\r\n");
+                bt_interface_exit_sniff_mode((unsigned char*)&g_bt_app_env.bd_addr);//exit sniff mode
+                bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH);//close role switch
             }
             else if (action == BUTTON_RELEASED)
             {
                 rt_kprintf("released\r\n");
                 xiaozhi_ui_chat_status("\u5f85\u547d\u4e2d...");
                 xz_mic(0);
+                rt_kprintf("enter sniff mode\r\n");
+                bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH  | BT_NOTIFY_LINK_POLICY_SNIFF_MODE);
                 mqtt_listen_stop(&g_xz_context);
             }   
         }

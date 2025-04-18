@@ -52,6 +52,10 @@
 #include "bf0_hal.h"
 #include "bts2_global.h"
 #include "bts2_app_pan.h"
+#include "bts2_app_inc.h"
+#include "ble_connection_manager.h"
+#include "bt_connection_manager.h"
+#include "xiaozhi.h"
 
 #ifdef LWIP_ALTCP_TLS
     #include <lwip/altcp_tls.h>
@@ -59,7 +63,7 @@
 
 #include <webclient.h>
 #include <cJSON.h>
-#include "xiaozhi.h"
+#include "bt_env.h"
 
 
 extern void xiaozhi_ui_update_ble(char *string);
@@ -349,6 +353,9 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
             if (g_state == kDeviceStateIdle || g_state == kDeviceStateListening)
             {
                 g_state = kDeviceStateSpeaking;
+                rt_kprintf("exit sniff mode\n");
+                bt_interface_exit_sniff_mode((unsigned char*)&g_bt_app_env.bd_addr);//exit sniff mode
+                bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH);//close role switch
                 xz_speaker(1);
             }
         }
@@ -364,6 +371,8 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
                 g_state = kDeviceStateIdle;
             }
             xz_speaker(0);
+            rt_kprintf("enter sniff mode\n");
+            bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH  | BT_NOTIFY_LINK_POLICY_SNIFF_MODE);
         }
         else if (strcmp(state, "sentence_start") == 0)
         {
@@ -381,7 +390,7 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
     }
     else
     {
-        rt_kprintf("Unkown type: %s\n", type);
+
     }
     cJSON_Delete(root);/*每次调用cJSON_Parse函数后，都要释放内存*/
 }
