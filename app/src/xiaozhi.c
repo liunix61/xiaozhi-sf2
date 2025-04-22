@@ -632,7 +632,7 @@ int http_xiaozhi_data_parse(char *json_data)
     cJSON_Delete(root);/*每次调用cJSON_Parse函数后，都要释放内存*/
     return  0;
 }
-
+extern BOOL first_pan_connected;
 char *get_xiaozhi()
 {
     char *buffer = RT_NULL;
@@ -644,6 +644,9 @@ char *get_xiaozhi()
 
     if (check_internet_access() == 0)
         return buffer;
+
+    if (check_internet_access() == 1)
+        first_pan_connected = TRUE;
 
     int size = strlen(ota_version) + sizeof(client_id_string) + sizeof(mac_address_string) * 2 + 16;
     char *ota_formatted = rt_malloc(size);
