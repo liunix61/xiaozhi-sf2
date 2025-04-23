@@ -334,7 +334,7 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
 
         xiaozhi_ui_chat_output("Xiaozhi 已连接!");
         xiaozhi_ui_update_ble("open");
-        xiaozhi_ui_chat_status("\u5f85\u547d\u4e2d...");
+        xiaozhi_ui_chat_status("待命中...");
         xiaozhi_ui_update_emoji("neutral");
     }
     else if (strcmp(type, "goodbye") == 0)
@@ -378,7 +378,6 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
         {
             rt_kputs(cJSON_GetObjectItem(root, "text")->valuestring);
             xiaozhi_ui_chat_output(cJSON_GetObjectItem(root, "text")->valuestring);
-            xiaozhi_ui_chat_status("\u8bb2\u8bdd\u4e2d...");
             
         }
     }
@@ -386,7 +385,6 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
     {
         rt_kputs(cJSON_GetObjectItem(root, "emotion")->valuestring);
         xiaozhi_ui_update_emoji(cJSON_GetObjectItem(root, "emotion")->valuestring);
-        xiaozhi_ui_chat_status("\u8bb2\u8bdd\u4e2d...");
     }
     else
     {

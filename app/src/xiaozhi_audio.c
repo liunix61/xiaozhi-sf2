@@ -273,8 +273,8 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
                 rt_kprintf("pressed\r\n");
                 if (g_state == kDeviceStateSpeaking)
                     mqtt_speak_abort(&g_xz_context, kAbortReasonWakeWordDetected);
-                mqtt_listen_start(&g_xz_context, kListeningModeAutoStop);
-                xiaozhi_ui_chat_status("\u8046\u542c\u4e2d...");
+                mqtt_listen_start(&g_xz_context, kListeningModeManualStop);
+                xiaozhi_ui_chat_status("聆听中...");
                 xz_mic(1);
                 rt_kprintf("exit sniff mode\r\n");
                 bt_interface_exit_sniff_mode((unsigned char*)&g_bt_app_env.bd_addr);//exit sniff mode
@@ -283,7 +283,7 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
             else if (action == BUTTON_RELEASED)
             {
                 rt_kprintf("released\r\n");
-                xiaozhi_ui_chat_status("\u5f85\u547d\u4e2d...");
+                xiaozhi_ui_chat_status("待命中...");
                 xz_mic(0);
                 rt_kprintf("enter sniff mode\r\n");
                 bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH  | BT_NOTIFY_LINK_POLICY_SNIFF_MODE);
@@ -298,7 +298,7 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
                 if (g_state == kDeviceStateSpeaking)
                     mqtt_speak_abort(&g_xz_context, kAbortReasonWakeWordDetected);
                 mqtt_listen_start(&g_xz_context, kListeningModeManualStop);
-                xiaozhi_ui_chat_status("\u8046\u542c\u4e2d...");
+                xiaozhi_ui_chat_status("聆听中...");
                 xz_mic(1);
                 rt_kprintf("exit sniff mode\r\n");
                 bt_interface_exit_sniff_mode((unsigned char*)&g_bt_app_env.bd_addr);//exit sniff mode
@@ -307,7 +307,7 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
             else if (action == BUTTON_RELEASED)
             {
                 rt_kprintf("released\r\n");
-                xiaozhi_ui_chat_status("\u5f85\u547d\u4e2d...");
+                xiaozhi_ui_chat_status("待命中...");
                 xz_mic(0);
                 rt_kprintf("enter sniff mode\r\n");
                 bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH  | BT_NOTIFY_LINK_POLICY_SNIFF_MODE);
@@ -535,7 +535,7 @@ void xz_speaker_open(xz_audio_t *thiz)
 void xz_speaker_close(xz_audio_t *thiz)
 {
     LOG_I("speaker off");
-    xiaozhi_ui_chat_status("\u5f85\u547d\u4e2d...");
+    xiaozhi_ui_chat_status("待命中...");
     if (thiz->speaker)
     {
         uint32_t cache_time_ms = 150;
