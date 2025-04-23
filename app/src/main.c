@@ -266,6 +266,28 @@ static int bt_app_interface_event_handle(uint16_t type, uint16_t event_id, uint8
             break;
         }
     }
+    else if(type == BT_NOTIFY_HID)
+    {
+        switch (event_id)
+        {
+        case BT_NOTIFY_HID_PROFILE_CONNECTED:
+        {
+            LOG_I("HID connected\n");
+            if (!g_pan_connected == TRUE)
+            {
+                bt_interface_conn_ext((char *)&g_bt_app_env.bd_addr, BT_PROFILE_PAN);
+            }
+        }
+        break;
+        case BT_NOTIFY_HID_PROFILE_DISCONNECTED:
+        {
+            LOG_I("HID disconnected\n");
+        }
+        break;
+        default:
+            break;
+        }
+    }
 
 
     return 0;
