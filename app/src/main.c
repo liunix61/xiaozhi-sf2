@@ -275,6 +275,10 @@ static int bt_app_interface_event_handle(uint16_t type, uint16_t event_id, uint8
             LOG_I("HID connected\n");
             if (!g_pan_connected == TRUE)
             {
+                if (g_bt_app_env.pan_connect_timer)
+                {
+                    rt_timer_stop(g_bt_app_env.pan_connect_timer);
+                }
                 bt_interface_conn_ext((char *)&g_bt_app_env.bd_addr, BT_PROFILE_PAN);
             }
         }
