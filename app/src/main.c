@@ -144,6 +144,10 @@ void keep_First_pan_connection()
     xiaozhi_ui_chat_output("正在重连pan(keep_First)...");
     if(first_reconnect_attempts < max_reconnect_attempts)
     {
+        if (g_bt_app_env.pan_connect_timer)
+        {
+            rt_timer_stop(g_bt_app_env.pan_connect_timer);
+        }
         bt_interface_conn_ext((char *)&g_bt_app_env.bd_addr, BT_PROFILE_PAN);
     }
     else{
@@ -336,7 +340,7 @@ int main(void)
 
         // handle pan connect event
         rt_mb_recv(g_bt_app_mb, (rt_uint32_t *)&value, RT_WAITING_FOREVER);
-
+        rt_kprintf("bt_app_mb recv %d\n", value);
         if (value == BT_APP_CONNECT_PAN)
         {
             if (g_bt_app_env.bt_connected)
