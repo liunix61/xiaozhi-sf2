@@ -276,17 +276,12 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
                 mqtt_listen_start(&g_xz_context, kListeningModeManualStop);
                 xiaozhi_ui_chat_status("聆听中...");
                 xz_mic(1);
-                rt_kprintf("exit sniff mode\r\n");
-                bt_interface_exit_sniff_mode((unsigned char*)&g_bt_app_env.bd_addr);//exit sniff mode
-                bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH);//close role switch
             }
             else if (action == BUTTON_RELEASED)
             {
                 rt_kprintf("released\r\n");
                 xiaozhi_ui_chat_status("待命中...");
                 xz_mic(0);
-                rt_kprintf("enter sniff mode\r\n");
-                bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH  | BT_NOTIFY_LINK_POLICY_SNIFF_MODE);
                 mqtt_listen_stop(&g_xz_context);
             }   
         }
@@ -300,17 +295,12 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
                 mqtt_listen_start(&g_xz_context, kListeningModeManualStop);
                 xiaozhi_ui_chat_status("聆听中...");
                 xz_mic(1);
-                rt_kprintf("exit sniff mode\r\n");
-                bt_interface_exit_sniff_mode((unsigned char*)&g_bt_app_env.bd_addr);//exit sniff mode
-                bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH);//close role switch
             }
             else if (action == BUTTON_RELEASED)
             {
                 rt_kprintf("released\r\n");
                 xiaozhi_ui_chat_status("待命中...");
                 xz_mic(0);
-                rt_kprintf("enter sniff mode\r\n");
-                bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH  | BT_NOTIFY_LINK_POLICY_SNIFF_MODE);
                 mqtt_listen_stop(&g_xz_context);
             }   
         }
@@ -340,7 +330,9 @@ void xz_button_init(void)
 void xz_audio_init()
 {
     rt_kprintf("xz_audio_init\n");
-
+    rt_kprintf("exit sniff mode\n");
+    bt_interface_exit_sniff_mode((unsigned char*)&g_bt_app_env.bd_addr);//exit sniff mode
+    bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH);//close role switch
     if (udp_pcb)
     {
         udp_remove(udp_pcb);

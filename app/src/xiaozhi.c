@@ -272,8 +272,30 @@ void my_mqtt_request_cb2(void *arg, err_t err)
 
 void my_mqtt_incoming_publish_cb(void *arg, const char *topic, u32_t tot_len)
 {
+    xiaozhi_context_t *ctx = (xiaozhi_context_t *)arg;
+    xz_topic_buf_pool_t *topic_buf_pool;
+    xz_topic_buf_t *buf;
+
     rt_kprintf("MQTT incoming topic : %d\n", tot_len);
     rt_kputs(topic);
+    rt_kputs("\n");
+
+
+    topic_buf_pool = &ctx->topic_buf_pool;
+    buf = &topic_buf_pool->buf[topic_buf_pool->wr_idx];
+    if (buf->buf)
+    {
+        /* pool full */
+        RT_ASSERT(0);
+    }
+
+    /* allocate buffer for incoming payload */
+    buf->buf = rt_malloc(tot_len);
+    RT_ASSERT(buf->buf);
+    buf->total_len = tot_len;
+    buf->used_len = 0;
+
+    topic_buf_pool->wr_idx = (topic_buf_pool->wr_idx + 1) & 1;
 }
 
 static char *my_json_string(cJSON *json, char *key)
@@ -292,15 +314,34 @@ static char *my_json_string(cJSON *json, char *key)
 void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags)
 {
     xiaozhi_context_t *ctx = (xiaozhi_context_t *)arg;
-    rt_kprintf("MQTT incoming pub data : %d, %x\n", len, flags);
-    rt_kputs(data);
+    xz_topic_buf_pool_t *topic_buf_pool;
+    xz_topic_buf_t *buf;
 
+    rt_kprintf("MQTT incoming pub data : %d, %x\n", len, flags);
+    // rt_kputs(data);
+
+    topic_buf_pool = &ctx->topic_buf_pool;
+    buf = &topic_buf_pool->buf[topic_buf_pool->rd_idx];
+    RT_ASSERT(buf->buf);
+
+    RT_ASSERT(buf->used_len + len <= buf->total_len);
+    memcpy(buf->buf + buf->used_len, data, len);
+    buf->used_len += len;
+    if (!flags)
+    {
+        /* wait for last fragment */
+        return;
+    }
 
     cJSON *item = NULL;
     cJSON *root = NULL;
-    rt_kputs(data);
+    rt_kputs(buf->buf);
     rt_kputs("\r\n");
-    root = cJSON_Parse(data);   /*json_data 为MQTT的原始数据*/
+    root = cJSON_Parse(buf->buf);   /*json_data 为MQTT的原始数据*/
+    rt_kprintf("buf range: %p~%p\n", buf->buf, buf->buf + buf->total_len);
+    rt_free(buf->buf);
+    buf->buf = NULL;
+    topic_buf_pool->rd_idx = (topic_buf_pool->rd_idx + 1) & 1;
     if (!root)
     {
         rt_kprintf("Error before: [%s]\n", cJSON_GetErrorPtr());
@@ -308,6 +349,7 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
     }
 
     char *type = cJSON_GetObjectItem(root, "type")->valuestring;
+    rt_kprintf("type addr: %p\n", type);
     if (strcmp(type, "hello") == 0)
     {
         cJSON *udp = cJSON_GetObjectItem(root, "udp");
@@ -353,9 +395,6 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
             if (g_state == kDeviceStateIdle || g_state == kDeviceStateListening)
             {
                 g_state = kDeviceStateSpeaking;
-                rt_kprintf("exit sniff mode\n");
-                bt_interface_exit_sniff_mode((unsigned char*)&g_bt_app_env.bd_addr);//exit sniff mode
-                bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH);//close role switch
                 xz_speaker(1);
             }
         }
@@ -371,8 +410,6 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
                 g_state = kDeviceStateIdle;
             }
             xz_speaker(0);
-            rt_kprintf("enter sniff mode\n");
-            bt_interface_wr_link_policy_setting((unsigned char*)&g_bt_app_env.bd_addr, BT_NOTIFY_LINK_POLICY_ROLE_SWITCH  | BT_NOTIFY_LINK_POLICY_SNIFF_MODE);
         }
         else if (strcmp(state, "sentence_start") == 0)
         {

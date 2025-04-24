@@ -37,6 +37,20 @@ enum DeviceState
 };
 extern enum DeviceState g_state;
 
+typedef struct
+{
+    uint16_t total_len;
+    uint16_t used_len;
+    uint8_t *buf;
+} xz_topic_buf_t;
+
+typedef struct
+{
+    uint8_t rd_idx;
+    uint8_t wr_idx;
+    xz_topic_buf_t buf[2];
+} xz_topic_buf_pool_t;
+
 /**
  * @brief xiaozhi cntext 数据结构体
  */
@@ -62,6 +76,7 @@ typedef struct
     uint32_t remote_sequence;
     struct mqtt_connect_client_info_t info;
     rt_sem_t sem;
+    xz_topic_buf_pool_t topic_buf_pool;
 } xiaozhi_context_t;
 
 extern xiaozhi_context_t g_xz_context;
