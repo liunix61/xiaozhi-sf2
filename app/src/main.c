@@ -277,7 +277,7 @@ static int bt_app_interface_event_handle(uint16_t type, uint16_t event_id, uint8
         case BT_NOTIFY_HID_PROFILE_CONNECTED:
         {
             LOG_I("HID connected\n");
-            if (!g_pan_connected == TRUE)
+            if (!g_pan_connected)
             {
                 if (g_bt_app_env.pan_connect_timer)
                 {
@@ -303,7 +303,7 @@ static int bt_app_interface_event_handle(uint16_t type, uint16_t event_id, uint8
 
 uint32_t bt_get_class_of_device()
 {
-    return (uint32_t)BT_SRVCLS_NETWORK | BT_DEVCLS_LAP | BT_LAP_FULLY;
+    return (uint32_t)BT_SRVCLS_NETWORK | BT_DEVCLS_PERIPHERAL | BT_PERIPHERAL_REMCONTROL;
 }
 
 
