@@ -328,7 +328,7 @@ int main(void)
     //Connect BT PAN
     g_bt_app_mb = rt_mb_create("bt_app", 8, RT_IPC_FLAG_FIFO);
 #ifdef BSP_BT_CONNECTION_MANAGER
-    bt_cm_set_profile_target(BT_CM_PAN, BT_SLAVE_ROLE, 1);
+    bt_cm_set_profile_target(BT_CM_HID, BT_SLAVE_ROLE, 1);
 #endif // BSP_BT_CONNECTION_MANAGER
 
     bt_interface_register_bt_event_notify_callback(bt_app_interface_event_handle);
