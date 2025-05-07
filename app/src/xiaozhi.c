@@ -400,22 +400,16 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
         }
         else if (strcmp(state, "stop") == 0)
         {
-            if (g_keep_listening)
-            {
-                mqtt_listen_start(ctx, kListeningModeAutoStop);
-                g_state = kDeviceStateListening;
-            }
-            else
-            {
-                g_state = kDeviceStateIdle;
-            }
+
+            g_state = kDeviceStateIdle;
             xz_speaker(0);
         }
         else if (strcmp(state, "sentence_start") == 0)
         {
             rt_kputs(cJSON_GetObjectItem(root, "text")->valuestring);
             xiaozhi_ui_chat_output(cJSON_GetObjectItem(root, "text")->valuestring);
-            
+
+
         }
     }
     else if (strcmp(type, "llm") == 0)// {"type":"llm", "text": "😊", "emotion": "smile"}

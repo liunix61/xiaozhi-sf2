@@ -272,7 +272,10 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
             {
                 rt_kprintf("pressed\r\n");
                 if (g_state == kDeviceStateSpeaking)
+                {
                     mqtt_speak_abort(&g_xz_context, kAbortReasonWakeWordDetected);
+                    g_state = kDeviceStateListening;
+                }
                 mqtt_listen_start(&g_xz_context, kListeningModeManualStop);
                 xiaozhi_ui_chat_status("聆听中...");
                 xz_mic(1);
@@ -291,7 +294,10 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
             {
                 rt_kprintf("pressed\r\n");
                 if (g_state == kDeviceStateSpeaking)
+                {
                     mqtt_speak_abort(&g_xz_context, kAbortReasonWakeWordDetected);
+                    g_state = kDeviceStateListening;
+                }
                 mqtt_listen_start(&g_xz_context, kListeningModeManualStop);
                 xiaozhi_ui_chat_status("聆听中...");
                 xz_mic(1);
@@ -509,7 +515,7 @@ void xz_speaker_open(xz_audio_t *thiz)
     if (!thiz->speaker)
     {
         LOG_I("speaker on");
-        xiaozhi_ui_chat_status("\u8bb2\u8bdd\u4e2d...");
+        xiaozhi_ui_chat_status("讲话中...");
         audio_parameter_t pa = {0};
         pa.write_bits_per_sample = 16;
         pa.write_channnel_num = 1;
