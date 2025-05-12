@@ -140,8 +140,8 @@ void keep_First_pan_connection()
     const int reconnect_interval_ms = 4000; // 4秒
 
     LOG_I("Keep_first_Attempting to reconnect PAN, attempt %d", first_reconnect_attempts + 1);
-    xiaozhi_ui_chat_status("connecting pan...");
-    xiaozhi_ui_chat_output("正在重连pan(keep_First)...");
+    xiaozhi_ui_chat_status("重连PAN...");
+    xiaozhi_ui_chat_output("正在重连PAN...");
     if(first_reconnect_attempts < max_reconnect_attempts)
     {
         if (g_bt_app_env.pan_connect_timer)
@@ -241,7 +241,7 @@ static int bt_app_interface_event_handle(uint16_t type, uint16_t event_id, uint8
         {
         case BT_NOTIFY_PAN_PROFILE_CONNECTED:
         {
-            xiaozhi_ui_chat_output("pan connect successed");
+            xiaozhi_ui_chat_output("pan连接成功");
             xiaozhi_ui_update_ble("open");
             LOG_I("pan connect successed \n");
             if ((g_bt_app_env.pan_connect_timer))
@@ -254,8 +254,8 @@ static int bt_app_interface_event_handle(uint16_t type, uint16_t event_id, uint8
         break;
         case BT_NOTIFY_PAN_PROFILE_DISCONNECTED:
         {
-            xiaozhi_ui_chat_status("remote device...");
-            xiaozhi_ui_chat_output("pan disconnect with remote device");
+            xiaozhi_ui_chat_status("PAN断开...");
+            xiaozhi_ui_chat_output("远程设备断开PAN");
             xiaozhi_ui_update_ble("close");
             LOG_I("pan disconnect with remote device\n");
             g_pan_connected = FALSE;  // 更新PAN连接状态
@@ -360,9 +360,9 @@ int main(void)
         else if (value == BT_APP_CONNECT_PAN_SUCCESS)
         {
             rt_kputs("BT_APP_CONNECT_PAN_SUCCESS\r\n");
-            xiaozhi_ui_chat_output("pan connect successed,Starting Xiaozhi...");
+            xiaozhi_ui_chat_output("PAN连接成功,开始连接小智...");
             xiaozhi_ui_update_ble("open");
-            xiaozhi_ui_chat_status("正在连接xiaozhi...");
+            xiaozhi_ui_chat_status("正在连接小智...");
             xiaozhi_ui_update_emoji("neutral");
 
             rt_thread_mdelay(2000);

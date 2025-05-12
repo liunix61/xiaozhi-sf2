@@ -266,7 +266,7 @@ static void xz_button_event_handler(int32_t pin, button_action_t action)
     last_action=action;
     if (g_state == kDeviceStateUnknown)//goodby唤醒
         {
-            xiaozhi_ui_chat_status("\u5524\u9192\u4e2d...");
+            xiaozhi_ui_chat_status("唤醒中...");
             mqtt_hello(&g_xz_context);
             if (action == BUTTON_PRESSED)
             {

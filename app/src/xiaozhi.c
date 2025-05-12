@@ -383,8 +383,8 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
     {
         g_state = kDeviceStateUnknown;
 
-        xiaozhi_ui_chat_output("goodbye! 等待唤醒...");
-        xiaozhi_ui_chat_status("disconnected");
+        xiaozhi_ui_chat_output("等待唤醒...");
+        xiaozhi_ui_chat_status("断开");
         xiaozhi_ui_update_emoji("sleep");
     }
     else if (strcmp(type, "tts") == 0)
@@ -440,7 +440,7 @@ void mqtt_hello(xiaozhi_context_t *ctx)
     }
     else
     {
-        xiaozhi_ui_chat_status("mqtt is not connected");
+        xiaozhi_ui_chat_status("mqtt断开");
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE();   
@@ -457,7 +457,7 @@ void mqtt_listen_start(xiaozhi_context_t *ctx, int mode)
     }
     else
     {
-        xiaozhi_ui_chat_status("mqtt is not connected");
+        xiaozhi_ui_chat_status("mqtt断开");
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE();   
@@ -492,7 +492,7 @@ void mqtt_listen_stop(xiaozhi_context_t *ctx)
     }
     else
     {
-        xiaozhi_ui_chat_status("mqtt is not connected");
+        xiaozhi_ui_chat_status("mqtt断开");
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE();
@@ -514,7 +514,7 @@ void mqtt_speak_abort(xiaozhi_context_t *ctx, int reason)
     }
     else
     {
-        xiaozhi_ui_chat_status("mqtt is not connected");
+        xiaozhi_ui_chat_status("mqtt断开");
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE(); 
@@ -532,7 +532,7 @@ void mqtt_wake_word_detected(xiaozhi_context_t *ctx, char *wakeword)
     }
     else
     {
-        xiaozhi_ui_chat_status("mqtt is not connected");
+        xiaozhi_ui_chat_status("mqtt断开");
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE();
@@ -550,7 +550,7 @@ void mqtt_iot_descriptor(xiaozhi_context_t *ctx, char *descriptors)
     }
     else
     {
-        xiaozhi_ui_chat_status("mqtt is not connected");
+        xiaozhi_ui_chat_status("mqtt断开");
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE(); 

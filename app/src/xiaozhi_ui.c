@@ -253,8 +253,8 @@ void xiaozhi_ui_task(void *args)
     }
 
     xiaozhi_ui_update_ble("close");
-    xiaozhi_ui_chat_status("connecting...");
-    xiaozhi_ui_chat_output("Ready...");
+    xiaozhi_ui_chat_status("连接...");
+    xiaozhi_ui_chat_output("ui准备...");
     xiaozhi_ui_update_emoji("neutral");
 
     while (1)
