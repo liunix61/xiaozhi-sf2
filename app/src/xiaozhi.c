@@ -221,6 +221,8 @@ void my_mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection_sta
     }
     else
     {
+        g_state = kDeviceStateFatalError;
+        rt_kprintf("MQTT connection failed, status: %d\n", status);
         // TODO: Reset MQTT parameters.
     }
 
@@ -461,7 +463,7 @@ void mqtt_listen_start(xiaozhi_context_t *ctx, int mode)
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE();   
-    rt_sem_take(ctx->sem, 5000);
+
 }
 
 void ws_send_listen_start(void *ws, char *session_id, enum ListeningMode mode)
@@ -496,7 +498,7 @@ void mqtt_listen_stop(xiaozhi_context_t *ctx)
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE();
-    rt_sem_take(ctx->sem, 5000);
+
 }
 
 void mqtt_speak_abort(xiaozhi_context_t *ctx, int reason)
@@ -518,7 +520,7 @@ void mqtt_speak_abort(xiaozhi_context_t *ctx, int reason)
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE(); 
-    rt_sem_take(ctx->sem, 5000);
+
 }
 
 void mqtt_wake_word_detected(xiaozhi_context_t *ctx, char *wakeword)
@@ -536,7 +538,7 @@ void mqtt_wake_word_detected(xiaozhi_context_t *ctx, char *wakeword)
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE();
-    rt_sem_take(ctx->sem, 5000);
+
 }
 
 void mqtt_iot_descriptor(xiaozhi_context_t *ctx, char *descriptors)
@@ -554,7 +556,7 @@ void mqtt_iot_descriptor(xiaozhi_context_t *ctx, char *descriptors)
         xiaozhi_ui_chat_output("请重启连接");
     }
     UNLOCK_TCPIP_CORE(); 
-    rt_sem_take(ctx->sem, 5000);
+
 }
 
 mqtt_client_t *mqtt_xiaozhi(xiaozhi_context_t *ctx)
