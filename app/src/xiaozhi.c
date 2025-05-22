@@ -376,7 +376,7 @@ void my_mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags
         g_state = kDeviceStateIdle;
         xz_audio_init();
 
-        xiaozhi_ui_chat_output("Xiaozhi 已连接!");
+        xiaozhi_ui_chat_output("小智 已连接!");
         xiaozhi_ui_update_ble("open");
         xiaozhi_ui_chat_status("待命中...");
         xiaozhi_ui_update_emoji("neutral");
