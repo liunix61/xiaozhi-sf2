@@ -17,12 +17,15 @@ else:
     color_fmt = '-rgb888'
 
 
+color_fmt=color_fmt+'  -lvgl_version 9'
+
 if GetDepend('LVGL_V9'):
     lvgl_ver = '9'
 else:
     lvgl_ver = '8'
 
-src += Env.ImgResource(objs_ezip, color_fmt, '2', '', False, lvgl_ver)
+
+src += Env.ImgResource(objs_ezip, color_fmt+ ' -cfile 2 -dpt 1')
 
 group = DefineGroup('asset', src, depend = [''])
 

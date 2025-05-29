@@ -315,7 +315,7 @@ uint32_t bt_get_class_of_device()
 #ifdef BT_DEVICE_NAME
     static const char *local_name = BT_DEVICE_NAME;
 #else
-    static const char *local_name = "sifli-pan-fu";
+    static const char *local_name = "sifli-pan";
 #endif
 
 int main(void)
