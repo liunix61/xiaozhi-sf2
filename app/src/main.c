@@ -215,6 +215,15 @@ static int bt_app_interface_event_handle(uint16_t type, uint16_t event_id, uint8
             }
         }
         break;
+        case BT_NOTIFY_COMMON_KEY_MISSING:
+             {
+                 bt_notify_device_base_info_t *info = (bt_notify_device_base_info_t *)data;
+                 LOG_I("Key missing %d", info->res);
+                 memset(&g_bt_app_env.bd_addr, 0xFF, sizeof(g_bt_app_env.bd_addr));
+                 bt_cm_delete_bonded_devs_and_linkkey(info->mac.addr);
+       
+             }
+        break;
         default:
             break;
         }
